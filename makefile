@@ -1,19 +1,19 @@
 .DEFAULT_GOAL := test
 
-FILES :=                              \
-    Collatz.html                      \
-    Collatz.log                       \
-    Collatz.py                        \
-    RunCollatz.in                     \
-    RunCollatz.out                    \
-    RunCollatz.py                     \
-    TestCollatz.out                   \
+FILES :=            \
+    Collatz.html    \
+    Collatz.log     \
+    Collatz.py      \
+    RunCollatz.in   \
+    RunCollatz.out  \
+    RunCollatz.py   \
+    TestCollatz.out \
     TestCollatz.py
 
 # uncomment these:
-#    .travis.yml                       \
-#    collatz-tests/EID-RunCollatz.in   \
-#    collatz-tests/EID-RunCollatz.out  \
+#    .travis.yml                           \
+#    collatz-tests/GitHubID-RunCollatz.in  \
+#    collatz-tests/GitHubID-RunCollatz.out \
 
 ifeq ($(shell uname), Darwin)          # Apple
     PYTHON   := python3.5
@@ -57,16 +57,18 @@ Collatz.html: Collatz.py
 Collatz.log:
 	git log > Collatz.log
 
-RunCollatz.tmp: Collatz.py RunCollatz.in RunCollatz.out RunCollatz.py .pylintrc
+.PHONY: RunCollatz.tmp
+RunCollatz.tmp: .pylintrc
 	-$(PYLINT) Collatz.py
 	-$(PYLINT) RunCollatz.py
 	$(PYTHON) RunCollatz.py < RunCollatz.in > RunCollatz.tmp
 	diff RunCollatz.tmp RunCollatz.out
 
-TestCollatz.tmp: Collatz.py TestCollatz.py .pylintrc
+.PHONY: TestCollatz.tmp
+TestCollatz.tmp: .pylintrc
 	-$(PYLINT) TestCollatz.py
-	$(COVERAGE) run    --branch TestCollatz.py >  TestCollatz.tmp 2>&1
-	$(COVERAGE) report -m                      >> TestCollatz.tmp
+	-$(COVERAGE) run    --branch TestCollatz.py >  TestCollatz.tmp 2>&1
+	-$(COVERAGE) report -m                      >> TestCollatz.tmp
 	cat TestCollatz.tmp
 
 check:
