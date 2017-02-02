@@ -55,7 +55,7 @@ def collatz_eval (n) :
     q = 1
     p = 1
     for i in range(n//2, n):
-        if collatz_length(i) > q:
+        if collatz_length(i) >= q:
             q = collatz_length(i)
             p = i
     return p
