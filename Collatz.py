@@ -8,7 +8,10 @@
 # projects/collatz/Collatz.py
 # Copyright (C) 2017
 # Glenn P. Downing
+# Rico C. Swan
 # ---------------------------
+
+globmemotab = {}
 
 # ------------
 # collatz_read
@@ -34,12 +37,16 @@ def collatz_length (r) :
     r a number
     return the int
     """
+    global globmemotab
+    if r in globmemotab:
+        return globmemotab[r]
     if r == 1:
         return 1
     if r % 2 == 0:
-        return 1 + collatz_length(r/2)
-    return 1 + collatz_length(3*r + 1)
-
+        globmemotab[r] = 1 + collatz_length(r/2)
+        return globmemotab[r]
+    globmemotab[r] = 1 + collatz_length(r*3 +1)
+    return globmemotab[r]
 # ------------
 # collatz_eval
 # ------------
