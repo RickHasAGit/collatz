@@ -37,6 +37,8 @@ def collatz_length (r) :
     r a number
     return the int
     """
+
+    assert r > 0
     global globmemotab
     if r in globmemotab:
         return globmemotab[r]
@@ -46,7 +48,9 @@ def collatz_length (r) :
         globmemotab[r] = 1 + collatz_length(r/2)
         return globmemotab[r]
     globmemotab[r] = 1 + collatz_length(r*3 +1)
+    assert globmemotab[r] > 0
     return globmemotab[r]
+
 # ------------
 # collatz_eval
 # ------------
@@ -66,6 +70,24 @@ def collatz_eval (n) :
             q = collatz_length(i)
             p = i
     return p
+
+
+# ------------
+# collatz_meta
+# ------------
+
+def collatz_meta (n) :
+    """
+    n the end of the range [1, n], inclusive
+    return the max cycle length of the range [1, n]
+    """
+    q = 1
+    p = 1
+    for i in range(1, n):
+        if collatz_length(i) >= q:
+            q = collatz_length(i)
+            p = i
+            print( str(p))
 
 # -------------
 # collatz_print
